@@ -10,6 +10,7 @@ class DefaultColor(object):
 
     USERNAME_FG = 250
     USERNAME_BG = 240
+    USERNAME_ROOT_FG = 250
     USERNAME_ROOT_BG = 124
 
     HOSTNAME_FG = 250
