@@ -225,9 +225,7 @@ def powerline_shell():
 
     custom_importer = CustomImporter()
     theme_mod = custom_importer.import_(
-        "powerline_shell.themes.",
-        config.get("theme", "default"),
-        "Theme")
+        "powerline_shell.themes.", config.get("theme", "default"), "Theme")
     theme = getattr(theme_mod, "Color")
 
     powerline = Powerline(args, config, theme)
@@ -237,9 +235,7 @@ def powerline_shell():
             seg_conf = {"type": seg_conf}
         seg_name = seg_conf["type"]
         seg_mod = custom_importer.import_(
-            "powerline_shell.segments.",
-            seg_name,
-            "Segment")
+            "powerline_shell.segments.", seg_name, "Segment")
         segment = getattr(seg_mod, "Segment")(powerline, seg_conf)
         segment.start()
         segments.append(segment)
