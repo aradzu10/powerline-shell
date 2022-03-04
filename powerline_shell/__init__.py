@@ -4,9 +4,8 @@ from __future__ import print_function
 import argparse
 import os
 import sys
-import importlib
 import json
-from .utils import warn, py3, import_file
+from .utils import warn, py3, CustomImporter
 import re
 
 
@@ -177,28 +176,6 @@ DEFAULT_CONFIG = {
         'root',
     ]
 }
-
-
-class ModuleNotFoundException(Exception):
-    pass
-
-
-class CustomImporter(object):
-    def __init__(self):
-        self.file_import_count = 0
-
-    def import_(self, module_prefix, module_or_file, description):
-        try:
-            mod = importlib.import_module(module_prefix + module_or_file)
-        except ImportError:
-            try:
-                module_name = "_custom_mod_{0}".format(self.file_import_count)
-                mod = import_file(module_name, os.path.expanduser(module_or_file))
-                self.file_import_count += 1
-            except (ImportError, IOError):
-                msg = "{0} {1} cannot be found".format(description, module_or_file)
-                raise ModuleNotFoundException(msg)
-        return mod
 
 
 def powerline_shell():
