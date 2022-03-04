@@ -6,10 +6,11 @@ ELLIPSIS = u'\u2026'
 
 
 def replace_home_dir(cwd):
+    realcwd = os.path.realpath(cwd)
     home = os.path.realpath(os.getenv('HOME'))
-    if cwd.startswith(home):
-        return '~' + cwd[len(home):]
-    return cwd
+    if realcwd.startswith(home):
+        return '~' + realcwd[len(home):]
+    return realcwd
 
 
 def split_path_into_names(cwd):
