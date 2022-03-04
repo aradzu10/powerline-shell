@@ -1,7 +1,7 @@
 import contextlib
 import collections
 
-from ..utils import BasicSegment, CustomImporter, warn
+from ..utils import ThreadedSegment, CustomImporter, warn
 
 
 @contextlib.contextmanager
@@ -13,7 +13,7 @@ def overide_append(powerline):
         powerline.append = old_append
 
 
-class Segment(BasicSegment):
+class Segment(ThreadedSegment):
     def __init__(self, powerline, segment_def):
         super().__init__(powerline, segment_def)
         self.segments = []
