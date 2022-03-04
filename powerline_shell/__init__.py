@@ -189,7 +189,7 @@ class CustomImporter(object):
         return mod
 
 
-def main():
+def powerline_shell():
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument('--generate-config', action='store_true',
                             help='Generate the default config and print it to stdout')
@@ -240,3 +240,10 @@ def main():
         segment.add_to_powerline()
     sys.stdout.write(powerline.draw())
     return 0
+
+
+def main():
+    try:
+        powerline_shell()
+    except KeyboardInterrupt:
+        pass
