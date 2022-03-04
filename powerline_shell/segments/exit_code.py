@@ -7,4 +7,4 @@ class Segment(BasicSegment):
             return
         fg = self.powerline.theme.CMD_FAILED_FG
         bg = self.powerline.theme.CMD_FAILED_BG
-        self.powerline.append(' %s ' % str(self.powerline.args.prev_error), fg, bg)
+        self.powerline.append(str(self.powerline.args.prev_error), fg, bg)

@@ -63,8 +63,8 @@ class Segment(ThreadedSegment):
             bg = self.powerline.theme.REPO_DIRTY_BG
             fg = self.powerline.theme.REPO_DIRTY_FG
         if self.powerline.segment_conf("vcs", "show_symbol"):
-            symbol = " " + RepoStats().symbols["svn"]
+            symbol = RepoStats().symbols["svn"] + " "
         else:
             symbol = ""
-        self.powerline.append(symbol + " rev " + self.revision + " ", fg, bg)
+        self.powerline.append(symbol + "rev " + self.revision, fg, bg)
         self.stats.add_to_powerline(self.powerline)

@@ -83,8 +83,7 @@ def add_cwd_segment(powerline):
 
     elif powerline.segment_conf("cwd", "mode") == "plain":
         joined = os.path.sep.join(names)
-        powerline.append(" %s " % (joined,), powerline.theme.CWD_FG,
-                         powerline.theme.PATH_BG)
+        powerline.append(joined, powerline.theme.CWD_FG, powerline.theme.PATH_BG)
         return
 
     for i, name in enumerate(names):
@@ -99,7 +98,7 @@ def add_cwd_segment(powerline):
 
         if not (is_last_dir and full_cwd):
             name = maybe_shorten_name(powerline, name)
-        powerline.append(' %s ' % name, fg, bg, separator, separator_fg)
+        powerline.append(name, fg, bg, separator, separator_fg)
 
 class Segment(BasicSegment):
     def add_to_powerline(self):

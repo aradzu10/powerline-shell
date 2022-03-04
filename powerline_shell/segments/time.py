@@ -8,13 +8,11 @@ class Segment(BasicSegment):
         powerline = self.powerline
         format = powerline.segment_conf('time', 'format')
         if format:
-            time_ = ' %s ' % time.strftime(format)
+            time_ = time.strftime(format)
         elif powerline.args.shell == 'bash':
-            time_ = ' \\t '
+            time_ = '\\t'
         elif powerline.args.shell == 'zsh':
-            time_ = ' %* '
+            time_ = '%*'
         else:
-            time_ = ' %s ' % time.strftime('%H:%M:%S')
-        powerline.append(time_,
-                         powerline.theme.TIME_FG,
-                         powerline.theme.TIME_BG)
+            time_ = time.strftime('%H:%M:%S')
+        powerline.append(time_, powerline.theme.TIME_FG, powerline.theme.TIME_BG)

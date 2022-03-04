@@ -96,6 +96,8 @@ class Powerline(object):
         self.separator = Powerline.symbols[mode]['separator']
         self.separator_thin = Powerline.symbols[mode]['separator_thin']
         self.segments = []
+        self.left_padding = self.config.get("left_padding", " ")
+        self.right_padding = self.config.get("right_padding", " ")
 
     def segment_conf(self, seg_name, key, default=None):
         return self.config.get(seg_name, {}).get(key, default)
@@ -117,7 +119,11 @@ class Powerline(object):
     def append(self, content, fg, bg, separator=None, separator_fg=None, sanitize=True):
         if self.args.shell == "bash" and sanitize:
             content = re.sub(r"([`$])", r"\\\1", content)
-        self.segments.append((content, fg, bg,
+        padding_content = self.left_padding + content + self.right_padding
+        self.segments.append((
+            padding_content,
+            fg,
+            bg,
             separator if separator is not None else self.separator,
             separator_fg if separator_fg is not None else bg))
 
@@ -185,7 +191,7 @@ class CustomImporter(object):
                 self.file_import_count += 1
             except (ImportError, IOError):
                 msg = "{0} {1} cannot be found".format(description, module_or_file)
-                raise ModuleNotFoundException( msg)
+                raise ModuleNotFoundException(msg)
         return mod
 
 

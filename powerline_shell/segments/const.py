@@ -6,4 +6,4 @@ class Segment(BasicSegment):
             return
         fg_color = self.segment_def.get("fg_color", self.powerline.theme.CONST_FG)
         bg_color = self.segment_def.get("bg_color", self.powerline.theme.CONST_BG)
-        self.powerline.append(" %s " % self.segment_def["str"], fg_color, bg_color)
+        self.powerline.append(self.segment_def["str"], fg_color, bg_color)

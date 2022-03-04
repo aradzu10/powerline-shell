@@ -26,6 +26,7 @@ class Segment(ThreadedSegment):
     def add_to_powerline(self):
         self.join()
         if self.num_jobs > 0:
-            self.powerline.append(' %d ' % self.num_jobs,
-                                  self.powerline.theme.JOBS_FG,
-                                  self.powerline.theme.JOBS_BG)
+            self.powerline.append(
+                str(self.num_jobs),
+                self.powerline.theme.JOBS_FG,
+                self.powerline.theme.JOBS_BG)

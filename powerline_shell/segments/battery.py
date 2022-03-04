@@ -20,13 +20,13 @@ class Segment(BasicSegment):
             status = f.read().strip()
         if status == "Full":
             if self.powerline.segment_conf("battery", "always_show_percentage", False):
-                pwr_fmt = u" {cap:d}% \U0001F50C "
+                pwr_fmt = u"{cap:d}% \U0001F50C"
             else:
-                pwr_fmt = u" \U0001F50C "
+                pwr_fmt = u"\U0001F50C"
         elif status == "Charging":
-            pwr_fmt = u" {cap:d}% \u26A1 "
+            pwr_fmt = u"{cap:d}% \u26A1"
         else:
-            pwr_fmt = " {cap:d}% "
+            pwr_fmt = "{cap:d}%"
 
         if cap < self.powerline.segment_conf("battery", "low_threshold", 20):
             bg = self.powerline.theme.BATTERY_LOW_BG

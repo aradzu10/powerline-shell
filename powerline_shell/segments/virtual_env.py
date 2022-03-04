@@ -15,4 +15,4 @@ class Segment(BasicSegment):
         env_name = os.path.basename(env)
         bg = self.powerline.theme.VIRTUAL_ENV_BG
         fg = self.powerline.theme.VIRTUAL_ENV_FG
-        self.powerline.append(" " + env_name + " ", fg, bg)
+        self.powerline.append(env_name, fg, bg)

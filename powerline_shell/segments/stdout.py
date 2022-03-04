@@ -12,6 +12,6 @@ class Segment(ThreadedSegment):
     def add_to_powerline(self):
         self.join()
         self.powerline.append(
-            " %s " % self.output,
+            self.output,
             self.segment_def.get("fg_color", self.powerline.theme.PATH_FG),
             self.segment_def.get("bg_color", self.powerline.theme.PATH_BG))

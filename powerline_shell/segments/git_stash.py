@@ -30,5 +30,5 @@ class Segment(ThreadedSegment):
         fg = self.powerline.theme.GIT_STASH_FG
 
         sc = self.stash_count if self.stash_count > 1 else ''
-        stash_str = u' {}{} '.format(sc, RepoStats.symbols['stash'])
+        stash_str = u'{}{}'.format(sc, RepoStats.symbols['stash'])
         self.powerline.append(stash_str, fg, bg)

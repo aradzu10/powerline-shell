@@ -65,5 +65,5 @@ class Segment(ThreadedSegment):
             symbol = RepoStats().symbols["bzr"] + " "
         else:
             symbol = ""
-        self.powerline.append(" " + symbol + self.branch + " ", fg, bg)
+        self.powerline.append(symbol + self.branch, fg, bg)
         self.stats.add_to_powerline(self.powerline)
