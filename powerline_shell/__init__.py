@@ -148,15 +148,22 @@ class Powerline(object):
             segment[3]))
 
 
-def find_config():
-    for location in [
+def get_config():
+    potential_locations = [
         "powerline-shell.json",
         "~/.powerline-shell.json",
         os.path.join(os.environ.get("XDG_CONFIG_HOME", "~/.config"), "powerline-shell", "config.json"),
-    ]:
+    ]
+
+    for location in potential_locations:
         full = os.path.expanduser(location)
         if os.path.exists(full):
-            return full
+            with open(full) as f:
+                try:
+                    return json.loads(f.read())
+                except Exception as e:
+                    warn("Config file ({0}) could not be decoded! Error: {1}".format(full, e))
+    return DEFAULT_CONFIG
 
 DEFAULT_CONFIG = {
     "segments": [
@@ -210,17 +217,7 @@ def powerline_shell():
         print(json.dumps(DEFAULT_CONFIG, indent=2))
         return 0
 
-    config_path = find_config()
-    if config_path:
-        with open(config_path) as f:
-            try:
-                config = json.loads(f.read())
-            except Exception as e:
-                warn("Config file ({0}) could not be decoded! Error: {1}"
-                     .format(config_path, e))
-                config = DEFAULT_CONFIG
-    else:
-        config = DEFAULT_CONFIG
+    config = get_config()
 
     custom_importer = CustomImporter()
     theme_mod = custom_importer.import_(
