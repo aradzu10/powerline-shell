@@ -147,15 +147,14 @@ class Powerline(object):
             self.fgcolor(segment[4]),
             segment[3]))
 
+POTENTIAL_LOCATIONS = [
+    "powerline-shell.json",
+    "~/.powerline-shell.json",
+    os.path.join(os.environ.get("XDG_CONFIG_HOME", "~/.config"), "powerline-shell", "config.json"),
+]
 
 def get_config():
-    potential_locations = [
-        "powerline-shell.json",
-        "~/.powerline-shell.json",
-        os.path.join(os.environ.get("XDG_CONFIG_HOME", "~/.config"), "powerline-shell", "config.json"),
-    ]
-
-    for location in potential_locations:
+    for location in POTENTIAL_LOCATIONS:
         full = os.path.expanduser(location)
         if os.path.exists(full):
             with open(full) as f:
@@ -214,6 +213,11 @@ def powerline_shell():
     args = arg_parser.parse_args()
 
     if args.generate_config:
+        print("Looking for a config file inside one of those location:")
+        for l in POTENTIAL_LOCATIONS:
+            print(l)
+        print("")
+        print("Default config:")
         print(json.dumps(DEFAULT_CONFIG, indent=2))
         return 0
 
