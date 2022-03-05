@@ -1,8 +1,9 @@
 import subprocess
-from ..utils import ThreadedSegment
+
+from powerline_shell import utils
 
 
-class Segment(ThreadedSegment):
+class Segment(utils.ThreadedSegment):
     def run(self):
         cmd = self.segment_def["command"]
         self.output = subprocess.check_output(cmd).decode("utf-8").strip()

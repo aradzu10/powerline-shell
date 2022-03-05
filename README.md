@@ -187,7 +187,7 @@ Make sure to change any relative imports to absolute imports. Ie. change things
 like:
 
 ```python
-from ..utils import BasicSegment
+from powerline_shell.utils import BasicSegment
 ```
 
 to

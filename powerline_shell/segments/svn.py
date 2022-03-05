@@ -1,12 +1,13 @@
 import subprocess
-from ..utils import ThreadedSegment, RepoStats, get_subprocess_env
+
+from powerline_shell import utils
 
 
 def _get_svn_revision():
     p = subprocess.Popen(["svn", "info", "--xml"],
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE,
-                         env=get_subprocess_env())
+                         env=utils.get_subprocess_env())
     for line in p.communicate()[0].decode("utf-8").splitlines():
         if "revision" in line:
             revision = line.split("=")[1].split('"')[1]
@@ -15,7 +16,7 @@ def _get_svn_revision():
 
 
 def parse_svn_stats(status):
-    stats = RepoStats()
+    stats = utils.RepoStats()
     for line in status:
         if line[0] == "?":
             stats.new += 1
@@ -36,7 +37,7 @@ def build_stats():
     try:
         p = subprocess.Popen(['svn', 'status'],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                             env=get_subprocess_env())
+                             env=utils.get_subprocess_env())
     except OSError:
         # Popen will throw an OSError if svn is not found
         return None, None
@@ -49,7 +50,7 @@ def build_stats():
     return stats, revision
 
 
-class Segment(ThreadedSegment):
+class Segment(utils.ThreadedSegment):
     def run(self):
         self.stats, self.revision = build_stats()
 
@@ -63,7 +64,7 @@ class Segment(ThreadedSegment):
             bg = self.powerline.theme.REPO_DIRTY_BG
             fg = self.powerline.theme.REPO_DIRTY_FG
         if self.powerline.segment_conf("vcs", "show_symbol"):
-            symbol = RepoStats().symbols["svn"] + " "
+            symbol = utils.RepoStats().symbols["svn"] + " "
         else:
             symbol = ""
         self.powerline.append(symbol + "rev " + self.revision, fg, bg)

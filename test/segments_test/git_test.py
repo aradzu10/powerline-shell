@@ -1,17 +1,18 @@
-import unittest
 import mock
-import tempfile
-import shutil
 import sh
-import powerline_shell.segments.git as git
-from ..testing_utils import dict_side_effect_fn
+import shutil
+import tempfile
+import unittest
+
+from powerline_shell import segments
+from powerline_shell import testing_utils
 
 
 class GitTest(unittest.TestCase):
 
     def setUp(self):
         self.powerline = mock.MagicMock()
-        self.powerline.segment_conf.side_effect = dict_side_effect_fn({
+        self.powerline.segment_conf.side_effect = testing_utils.dict_side_effect_fn({
             ("vcs", "show_symbol"): False,
         })
 
@@ -19,7 +20,7 @@ class GitTest(unittest.TestCase):
         sh.cd(self.dirname)
         sh.git("init", ".")
 
-        self.segment = git.Segment(self.powerline, {})
+        self.segment = segments.git.Segment(self.powerline, {})
 
     def tearDown(self):
         shutil.rmtree(self.dirname)

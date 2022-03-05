@@ -1,18 +1,19 @@
 import subprocess
-from ..utils import RepoStats, ThreadedSegment, get_subprocess_env
+
+from powerline_shell import utils
 
 
 def _get_hg_branch():
     p = subprocess.Popen(["hg", "branch"],
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE,
-                         env=get_subprocess_env())
+                         env=utils.get_subprocess_env())
     branch = p.communicate()[0].decode("utf-8").rstrip('\n')
     return branch
 
 
 def parse_hg_stats(status):
-    stats = RepoStats()
+    stats = utils.RepoStats()
     for statusline in status:
         if statusline[0] == "A":
             stats.staged += 1
@@ -34,7 +35,7 @@ def build_stats():
         p = subprocess.Popen(["hg", "status"],
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE,
-                             env=get_subprocess_env())
+                             env=utils.get_subprocess_env())
     except OSError:
         # Will be thrown if hg cannot be found
         return None, None
@@ -47,7 +48,7 @@ def build_stats():
     return stats, branch
 
 
-class Segment(ThreadedSegment):
+class Segment(utils.ThreadedSegment):
     def run(self):
         self.stats, self.branch = build_stats()
 
@@ -61,7 +62,7 @@ class Segment(ThreadedSegment):
             bg = self.powerline.theme.REPO_DIRTY_BG
             fg = self.powerline.theme.REPO_DIRTY_FG
         if self.powerline.segment_conf("vcs", "show_symbol"):
-            symbol = RepoStats().symbols["hg"] + " "
+            symbol = utils.RepoStats().symbols["hg"] + " "
         else:
             symbol = ""
         self.powerline.append(symbol + self.branch, fg, bg)

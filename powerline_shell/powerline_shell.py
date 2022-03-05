@@ -1,13 +1,14 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 import argparse
-import os
-import sys
 import json
-from .utils import warn, py3, CustomImporter
+import os
 import re
+import sys
 
+from powerline_shell import utils
+from powerline_shell.segments import load_segment
+from powerline_shell.themes import load_theme
 
 def _current_dir():
     """Returns the full current working directory as the user would have used
@@ -36,7 +37,7 @@ def get_valid_cwd():
     try:
         cwd = _current_dir()
     except:
-        warn("Your current directory is invalid. If you open a ticket at " +
+        utils.warn("Your current directory is invalid. If you open a ticket at " +
             "https://github.com/milkbikis/powerline-shell/issues/new " +
             "we would love to help fix the issue.")
         sys.stdout.write("> ")
@@ -48,7 +49,7 @@ def get_valid_cwd():
         parts.pop()
         up = os.sep.join(parts)
     if cwd != up:
-        warn("Your current directory is invalid. Lowest valid directory: "
+        utils.warn("Your current directory is invalid. Lowest valid directory: "
              + up)
     return cwd
 
@@ -129,7 +130,7 @@ class Powerline(object):
     def draw(self):
         text = (''.join(self.draw_segment(i) for i in range(len(self.segments)))
                 + self.reset) + ' '
-        if py3:
+        if utils.py3:
             return text
         else:
             return text.encode('utf-8')
@@ -160,7 +161,7 @@ def get_config():
                 try:
                     return json.loads(f.read())
                 except Exception as e:
-                    warn("Config file ({0}) could not be decoded! Error: {1}".format(full, e))
+                    utils.warn("Config file ({0}) could not be decoded! Error: {1}".format(full, e))
     return DEFAULT_CONFIG
 
 DEFAULT_CONFIG = {
@@ -200,10 +201,7 @@ def powerline_shell():
 
     config = get_config()
 
-    custom_importer = CustomImporter()
-    theme_mod = custom_importer.import_(
-        "powerline_shell.themes.", config.get("theme", "default"), "Theme")
-    theme = getattr(theme_mod, "Color")
+    theme = load_theme.load_theme(config.get("theme", "default"))()
 
     powerline = Powerline(args, config, theme)
     segments = []
@@ -211,19 +209,11 @@ def powerline_shell():
         if not isinstance(seg_conf, dict):
             seg_conf = {"type": seg_conf}
         seg_name = seg_conf["type"]
-        seg_mod = custom_importer.import_(
-            "powerline_shell.segments.", seg_name, "Segment")
-        segment = getattr(seg_mod, "Segment")(powerline, seg_conf)
+        seg_class = load_segment.load_segment(seg_name)
+        segment = seg_class(powerline, seg_conf)
         segment.start()
         segments.append(segment)
     for segment in segments:
         segment.add_to_powerline()
     sys.stdout.write(powerline.draw())
     return 0
-
-
-def main():
-    try:
-        powerline_shell()
-    except KeyboardInterrupt:
-        pass

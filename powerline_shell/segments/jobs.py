@@ -1,11 +1,12 @@
 import os
+import platform
 import re
 import subprocess
-import platform
-from ..utils import ThreadedSegment
+
+from powerline_shell import utils
 
 
-class Segment(ThreadedSegment):
+class Segment(utils.ThreadedSegment):
     def run(self):
         self.num_jobs = 0
         if platform.system().startswith('CYGWIN'):

@@ -1,11 +1,12 @@
 import unittest
-from powerline_shell.utils import RepoStats
+
+from powerline_shell import utils
 
 
 class RepoStatsTest(unittest.TestCase):
 
     def setUp(self):
-        self.repo_stats = RepoStats()
+        self.repo_stats = utils.RepoStats()
         self.repo_stats.changed = 1
         self.repo_stats.conflicted = 4
 

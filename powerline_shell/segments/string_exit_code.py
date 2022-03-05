@@ -1,7 +1,7 @@
-from ..utils import BasicSegment
+from powerline_shell import utils
 
 
-class Segment(BasicSegment):
+class Segment(utils.BasicSegment):
     def add_to_powerline(self):
         if "str" not in self.segment_def:
             warn("No `str` field inside of string exit code")

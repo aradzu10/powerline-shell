@@ -1,12 +1,13 @@
 import subprocess
-from ..utils import ThreadedSegment, decode
+
+from powerline_shell import utils
 
 
-class Segment(ThreadedSegment):
+class Segment(utils.ThreadedSegment):
     def run(self):
         self.version = None
         try:
-            output = decode(
+            output = utils.decode(
                 subprocess.check_output(['php', '-r', 'echo PHP_VERSION;'],
                                         stderr=subprocess.STDOUT))
             self.version = output.split('-')[0] if '-' in output else output

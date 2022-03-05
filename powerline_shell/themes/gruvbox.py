@@ -1,4 +1,4 @@
-from powerline_shell.themes.default import DefaultColor
+from powerline_shell.themes import default
 
 """
 absolute colors based on
@@ -43,7 +43,7 @@ faded_purple = 96
 faded_aqua   = 66
 faded_orange = 130
 
-class Color(DefaultColor):
+class Color(default.DefaultColor):
     USERNAME_ROOT_BG = faded_red
     USERNAME_BG = dark2
     USERNAME_FG = bright_purple

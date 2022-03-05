@@ -1,7 +1,7 @@
-from powerline_shell.themes.default import DefaultColor
+from powerline_shell.themes import default
 
 
-class Color(DefaultColor):
+class Color(default.DefaultColor):
     """Basic theme which only uses colors in 0-15 range"""
     USERNAME_FG = 8
     USERNAME_BG = 15

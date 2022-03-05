@@ -1,6 +1,7 @@
 import re
 import subprocess
-from ..utils import RepoStats, ThreadedSegment, get_git_subprocess_env
+
+from powerline_shell import utils
 
 
 def parse_git_branch_info(status):
@@ -11,17 +12,17 @@ def parse_git_branch_info(status):
 def _get_git_detached_branch():
     p = subprocess.Popen(['git', 'describe', '--tags', '--always'],
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                         env=get_git_subprocess_env())
+                         env=utils.get_git_subprocess_env())
     detached_ref = p.communicate()[0].decode("utf-8").rstrip('\n')
     if p.returncode == 0:
-        branch = u'{} {}'.format(RepoStats.symbols['detached'], detached_ref)
+        branch = u'{} {}'.format(utils.RepoStats.symbols['detached'], detached_ref)
     else:
         branch = 'Big Bang'
     return branch
 
 
 def parse_git_stats(status):
-    stats = RepoStats()
+    stats = utils.RepoStats()
     for statusline in status[1:]:
         code = statusline[:2]
         if code == '??':
@@ -41,7 +42,7 @@ def build_stats():
     try:
         p = subprocess.Popen(['git', 'status', '--porcelain', '-b'],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                             env=get_git_subprocess_env())
+                             env=utils.get_git_subprocess_env())
     except OSError:
         # Popen will throw an OSError if git is not found
         return (None, None)
@@ -63,7 +64,7 @@ def build_stats():
     return stats, branch
 
 
-class Segment(ThreadedSegment):
+class Segment(utils.ThreadedSegment):
     def run(self):
         self.stats, self.branch = build_stats()
 
@@ -77,7 +78,7 @@ class Segment(ThreadedSegment):
             bg = self.powerline.theme.REPO_DIRTY_BG
             fg = self.powerline.theme.REPO_DIRTY_FG
         if self.powerline.segment_conf("vcs", "show_symbol"):
-            symbol = RepoStats().symbols["git"] + " "
+            symbol = utils.RepoStats().symbols["git"] + " "
         else:
             symbol = ""
         self.powerline.append(symbol + self.branch, fg, bg)

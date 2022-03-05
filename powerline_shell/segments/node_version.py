@@ -1,8 +1,9 @@
 import subprocess
-from ..utils import ThreadedSegment
+
+from powerline_shell import utils
 
 
-class Segment(ThreadedSegment):
+class Segment(utils.ThreadedSegment):
     def run(self):
         try:
             p1 = subprocess.Popen(["node", "--version"], stdout=subprocess.PIPE)

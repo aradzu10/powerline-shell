@@ -1,9 +1,10 @@
-import unittest
 import mock
 import os
-import tempfile
 import shutil
-import powerline_shell as p
+import tempfile
+import unittest
+
+import powerline_shell
 
 
 class CwdTest(unittest.TestCase):
@@ -18,7 +19,7 @@ class CwdTest(unittest.TestCase):
     @mock.patch('powerline_shell.warn')
     def test_normal(self, warn, getenv):
         getenv.return_value = self.dirname
-        self.assertEqual(p.get_valid_cwd(), self.dirname)
+        self.assertEqual(powerline_shell.get_valid_cwd(), self.dirname)
         self.assertEqual(warn.call_count, 0)
 
     @mock.patch('os.getenv')
@@ -26,7 +27,7 @@ class CwdTest(unittest.TestCase):
     def test_nonexistent_warns(self, warn, getenv):
         subdir = os.path.join(self.dirname, 'subdir')
         getenv.return_value = subdir
-        self.assertEqual(p.get_valid_cwd(), subdir)
+        self.assertEqual(powerline_shell.get_valid_cwd(), subdir)
         self.assertEqual(warn.call_count, 1)
 
     @mock.patch('os.getenv')
@@ -34,7 +35,7 @@ class CwdTest(unittest.TestCase):
     def test_falls_back_to_getcwd(self, warn, getenv):
         getenv.return_value = None
         os.chdir(self.dirname)
-        self.assertEqual(p.get_valid_cwd(), self.dirname)
+        self.assertEqual(powerline_shell.get_valid_cwd(), self.dirname)
         self.assertEqual(warn.call_count, 0)
 
     @mock.patch('os.getenv')
@@ -48,6 +49,6 @@ class CwdTest(unittest.TestCase):
         os.rmdir(subdir)
 
         with self.assertRaises(SystemExit) as e:
-            p.get_valid_cwd()
+            powerline_shell.get_valid_cwd()
 
         self.assertEqual(warn.call_count, 1)

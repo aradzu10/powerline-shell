@@ -1,12 +1,13 @@
 import subprocess
-from ..utils import RepoStats, ThreadedSegment, get_git_subprocess_env
+
+from powerline_shell import utils
 
 
 def get_stash_count():
     try:
         p = subprocess.Popen(['git', 'stash', 'list'],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                             env=get_git_subprocess_env())
+                             env=utils.get_git_subprocess_env())
     except OSError:
         return 0
 
@@ -17,7 +18,7 @@ def get_stash_count():
     return pdata[0].count(b'\n')
 
 
-class Segment(ThreadedSegment):
+class Segment(utils.ThreadedSegment):
     def run(self):
         self.stash_count = get_stash_count()
 
@@ -30,5 +31,5 @@ class Segment(ThreadedSegment):
         fg = self.powerline.theme.GIT_STASH_FG
 
         sc = self.stash_count if self.stash_count > 1 else ''
-        stash_str = u'{}{}'.format(sc, RepoStats.symbols['stash'])
+        stash_str = u'{}{}'.format(sc, utils.RepoStats.symbols['stash'])
         self.powerline.append(stash_str, fg, bg)

@@ -1,7 +1,7 @@
 import unittest
 from parameterized import parameterized
 
-from powerline_shell.color_compliment import getOppositeColor
+from powerline_shell import color_compliment
 
 
 def build_inputs():
@@ -46,4 +46,7 @@ class getOppositeColorTestCase(unittest.TestCase):
  
     def test_rgb_input_get_opposite_not_negative(self, name, test_input):
         negative = -1
-        self.assertNotIn(negative, getOppositeColor(*test_input), u'{0:#08x} returns negative number in rgb tuple'.format(int(name,16)))
+        self.assertNotIn(
+            negative,
+            color_compliment.getOppositeColor(*test_input),
+            u'{0:#08x} returns negative number in rgb tuple'.format(int(name,16)))

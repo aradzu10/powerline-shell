@@ -1,7 +1,8 @@
-import contextlib
 import collections
+import contextlib
 
-from ..utils import ThreadedSegment, CustomImporter, warn
+from powerline_shell import utils
+from powerline_shell.segments import load_segment
 
 
 @contextlib.contextmanager
@@ -13,7 +14,7 @@ def overide_append(powerline):
         powerline.append = old_append
 
 
-class Segment(ThreadedSegment):
+class Segment(utils.ThreadedSegment):
     def __init__(self, powerline, segment_def):
         super().__init__(powerline, segment_def)
         self.appended = collections.defaultdict(list)
@@ -22,19 +23,17 @@ class Segment(ThreadedSegment):
 
     def run(self):
         if "depend" not in self.segment_def or "segments" not in self.segment_def:
-            warn("Depended group missing `depend` or `segments`")
+            utils.warn("Depended group missing `depend` or `segments`")
             return
         self.parse_segments()
 
     def parse_segments(self):
-        custom_importer = CustomImporter()
         for seg_conf in self.segment_def["segments"]:
             if not isinstance(seg_conf, dict):
                 seg_conf = {"type": seg_conf}
             seg_name = seg_conf["type"]
-            seg_mod = custom_importer.import_(
-                "powerline_shell.segments.", seg_name, "Segment")
-            segment = getattr(seg_mod, "Segment")(self.powerline, seg_conf)
+            seg_class = load_segment.load_segment(seg_name)
+            segment = seg_class(self.powerline, seg_conf)
             segment.start()
             self.segments.append(segment)
 

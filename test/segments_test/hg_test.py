@@ -1,19 +1,20 @@
-import unittest
 import mock
-import tempfile
-import shutil
 import sh
-import powerline_shell.segments.hg as hg
-from powerline_shell.utils import RepoStats
-from ..testing_utils import dict_side_effect_fn
+import shutil
+import tempfile
+import unittest
+
+from powerline_shell import segments
+from powerline_shell import testing_utils
+from powerline_shell import utils
 
 
 test_cases = {
-    "? new-file": RepoStats(new=1),
-    "M modified-file": RepoStats(changed=1),
-    "R removed-file": RepoStats(changed=1),
-    "! missing-file": RepoStats(changed=1),
-    "A added-file": RepoStats(staged=1),
+    "? new-file": utils.RepoStats(new=1),
+    "M modified-file": utils.RepoStats(changed=1),
+    "R removed-file": utils.RepoStats(changed=1),
+    "! missing-file": utils.RepoStats(changed=1),
+    "A added-file": utils.RepoStats(staged=1),
 }
 
 
@@ -21,7 +22,7 @@ class HgTest(unittest.TestCase):
 
     def setUp(self):
         self.powerline = mock.MagicMock()
-        self.powerline.segment_conf.side_effect = dict_side_effect_fn({
+        self.powerline.segment_conf.side_effect = testing_utils.dict_side_effect_fn({
             ("vcs", "show_symbol"): False,
         })
 
@@ -29,7 +30,7 @@ class HgTest(unittest.TestCase):
         sh.cd(self.dirname)
         sh.hg("init", ".")
 
-        self.segment = hg.Segment(self.powerline, {})
+        self.segment = segment.hg.Segment(self.powerline, {})
 
     def tearDown(self):
         shutil.rmtree(self.dirname)
@@ -71,5 +72,5 @@ class HgTest(unittest.TestCase):
     @mock.patch('powerline_shell.segments.hg._get_hg_status')
     def test_all(self, check_output):
         for stdout, result in test_cases.items():
-            stats = hg.parse_hg_stats([stdout])
+            stats = segment.hg.parse_hg_stats([stdout])
             self.assertEquals(result, stats)

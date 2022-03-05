@@ -1,6 +1,6 @@
 import importlib
-import sys
 import os
+import sys
 import threading
 
 py3 = sys.version_info[0] == 3
@@ -108,44 +108,6 @@ class ThreadedSegment(threading.Thread):
         super(ThreadedSegment, self).__init__()
         self.powerline = powerline
         self.segment_def = segment_def  # type: dict
-
-
-def import_file(module_name, path):
-    # An implementation of https://stackoverflow.com/a/67692/683436
-    if py3 and sys.version_info[1] >= 5:
-        spec = importlib.util.spec_from_file_location(module_name, path)
-        if not spec:
-            raise ImportError()
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
-        return mod
-    elif py3:
-        return importlib.machinery.SourceFileLoader(module_name, path).load_module()
-    else:
-        import imp
-        return imp.load_source(module_name, path)
-
-
-class ModuleNotFoundException(Exception):
-    pass
-
-
-class CustomImporter(object):
-    def __init__(self):
-        self.file_import_count = 0
-
-    def import_(self, module_prefix, module_or_file, description):
-        try:
-            mod = importlib.import_module(module_prefix + module_or_file)
-        except ImportError:
-            try:
-                module_name = "_custom_mod_{0}".format(self.file_import_count)
-                mod = import_file(module_name, os.path.expanduser(module_or_file))
-                self.file_import_count += 1
-            except (ImportError, IOError):
-                msg = "{0} {1} cannot be found".format(description, module_or_file)
-                raise ModuleNotFoundException(msg)
-        return mod
 
 
 def get_PATH():

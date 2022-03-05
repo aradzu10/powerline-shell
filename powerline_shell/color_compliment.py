@@ -1,12 +1,13 @@
+import sys
 from colorsys import hls_to_rgb, rgb_to_hls
 # md5 deprecated since Python 2.5
 try:
     from md5 import md5
 except ImportError:
     from hashlib import md5
-import sys
-from .colortrans import *
-from .utils import py3
+
+from powerline_shell import colortrans
+from powerline_shell import utils
 
 
 def getOppositeColor(r,g,b):
@@ -27,9 +28,9 @@ def getOppositeColor(r,g,b):
     return tuple([ int(x) for x in opp])
 
 def stringToHashToColorAndOpposite(string):
-    if py3:
+    if utils.py3:
         string = string.encode('utf-8')
     string = md5(string).hexdigest()[:6] # get a random color
-    color1 = rgbstring2tuple(string)
+    color1 = colortrans.rgbstring2tuple(string)
     color2 = getOppositeColor(*color1)
     return color1, color2

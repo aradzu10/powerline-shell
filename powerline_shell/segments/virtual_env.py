@@ -1,8 +1,9 @@
 import os
-from ..utils import BasicSegment
+
+from powerline_shell import utils
 
 
-class Segment(BasicSegment):
+class Segment(utils.BasicSegment):
     def add_to_powerline(self):
         env = os.getenv('VIRTUAL_ENV') \
             or os.getenv('CONDA_ENV_PATH') \

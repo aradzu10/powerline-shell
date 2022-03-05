@@ -1,6 +1,7 @@
 import os
 import subprocess
-from ..utils import RepoStats, ThreadedSegment, get_subprocess_env
+
+from powerline_shell import utils
 
 
 def _get_fossil_branch():
@@ -13,7 +14,7 @@ def _get_fossil_branch():
 
 
 def parse_fossil_stats(status):
-    stats = RepoStats()
+    stats = utils.RepoStats()
     for line in status:
         if line.startswith("ADDED"):
             stats.staged += 1
@@ -38,7 +39,7 @@ def build_stats():
     try:
         subprocess.Popen(['fossil'], stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE,
-                         env=get_subprocess_env()).communicate()
+                         env=utils.get_subprocess_env()).communicate()
     except OSError:
         # Popen will throw an OSError if fossil is not found
         return (None, None)
@@ -47,12 +48,12 @@ def build_stats():
         return (None, None)
     status = _get_fossil_status()
     if status == []:
-        return (RepoStats(), branch)
+        return (utils.RepoStats(), branch)
     stats = parse_fossil_stats(status)
     return stats, branch
 
 
-class Segment(ThreadedSegment):
+class Segment(utils.ThreadedSegment):
 
     def add_to_powerline(self):
         self.stats, self.branch = build_stats()
@@ -64,7 +65,7 @@ class Segment(ThreadedSegment):
             bg = self.powerline.theme.REPO_DIRTY_BG
             fg = self.powerline.theme.REPO_DIRTY_FG
         if self.powerline.segment_conf("vcs", "show_symbol"):
-            symbol = RepoStats().symbols["fossil"] + " "
+            symbol = utils.RepoStats().symbols["fossil"] + " "
         else:
             symbol = ""
         self.powerline.append(symbol + self.branch, fg, bg)

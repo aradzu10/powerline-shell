@@ -1,8 +1,9 @@
-from ..utils import BasicSegment, warn
 import os
 
+from powerline_shell import utils
 
-class Segment(BasicSegment):
+
+class Segment(utils.BasicSegment):
     def add_to_powerline(self):
         # See discussion in https://github.com/banga/powerline-shell/pull/204
         # regarding the directory where battery info is saved
@@ -11,7 +12,7 @@ class Segment(BasicSegment):
         elif os.path.exists("/sys/class/power_supply/BAT1"):
             dir_ = "/sys/class/power_supply/BAT1"
         else:
-            warn("battery directory could not be found")
+            utils.warn("battery directory could not be found")
             return
 
         with open(os.path.join(dir_, "capacity")) as f:

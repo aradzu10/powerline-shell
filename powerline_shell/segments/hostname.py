@@ -1,16 +1,17 @@
-from ..utils import BasicSegment
-from ..color_compliment import stringToHashToColorAndOpposite
-from ..colortrans import rgb2short
 from socket import gethostname
 
+from powerline_shell import color_compliment
+from powerline_shell import colortrans
+from powerline_shell import utils
 
-class Segment(BasicSegment):
+
+class Segment(utils.BasicSegment):
     def add_to_powerline(self):
         powerline = self.powerline
         if powerline.segment_conf("hostname", "colorize"):
             hostname = gethostname()
-            FG, BG = stringToHashToColorAndOpposite(hostname)
-            FG, BG = (rgb2short(*color) for color in [FG, BG])
+            FG, BG = color_compliment.stringToHashToColorAndOpposite(hostname)
+            FG, BG = (colortrans.rgb2short(*color) for color in [FG, BG])
             host_prompt = hostname.split(".")[0]
             powerline.append(host_prompt, FG, BG)
         else:

@@ -3,8 +3,8 @@ import unittest
 import shutil
 import mock
 import sh
-import powerline_shell.segments.svn as svn
-from ..testing_utils import dict_side_effect_fn
+from powerline_shell.segments import svn
+from powerline_shell.testing_utils import dict_side_effect_fn
 
 
 class SvnTest(unittest.TestCase):

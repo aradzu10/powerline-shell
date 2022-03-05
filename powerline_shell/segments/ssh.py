@@ -1,8 +1,9 @@
 import os
-from ..utils import BasicSegment
+
+from powerline_shellf import utils
 
 
-class Segment(BasicSegment):
+class Segment(utils.BasicSegment):
     def add_to_powerline(self):
         if os.getenv('SSH_CLIENT'):
             powerline = self.powerline

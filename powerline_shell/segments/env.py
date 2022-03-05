@@ -1,8 +1,8 @@
 import os
-from ..utils import BasicSegment
+from powerline_shell import utils
 
 
-class Segment(BasicSegment):
+class Segment(utils.BasicSegment):
     def add_to_powerline(self):
         self.powerline.append(
             os.getenv(self.segment_def["var"]),

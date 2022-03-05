@@ -1,6 +1,7 @@
 import unittest
 import mock
-import powerline_shell.segments.uptime as uptime
+
+from powerline_shell import segments
 
 test_cases = {
     # linux test cases
@@ -19,7 +20,7 @@ class UptimeTest(unittest.TestCase):
 
     def setUp(self):
         self.powerline = mock.MagicMock()
-        self.segment = uptime.Segment(self.powerline, {})
+        self.segment = segments.uptime.Segment(self.powerline, {})
 
     @mock.patch('subprocess.check_output')
     def test_all(self, check_output):

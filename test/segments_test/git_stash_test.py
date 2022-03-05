@@ -1,10 +1,11 @@
-import unittest
 import mock
-import tempfile
-import shutil
 import sh
-import powerline_shell.segments.git_stash as git_stash
-from powerline_shell.utils import RepoStats
+import shutil
+import tempfile
+import unittest
+
+from powerline_shell import segments
+from powerline_shell import utils
 
 
 class GitStashTest(unittest.TestCase):
@@ -15,7 +16,7 @@ class GitStashTest(unittest.TestCase):
         sh.cd(self.dirname)
         sh.git("init", ".")
 
-        self.segment = git_stash.Segment(self.powerline, {})
+        self.segment = segments.git_stash.Segment(self.powerline, {})
 
     def tearDown(self):
         shutil.rmtree(self.dirname)
@@ -56,7 +57,7 @@ class GitStashTest(unittest.TestCase):
         self._stash()
         self.segment.start()
         self.segment.add_to_powerline()
-        expected = u' {} '.format(RepoStats.symbols["stash"])
+        expected = u' {} '.format(utils.RepoStats.symbols["stash"])
         self.assertEqual(self.powerline.append.call_args[0][0], expected)
 
     def test_multiple_stashes(self):
@@ -73,5 +74,5 @@ class GitStashTest(unittest.TestCase):
 
         self.segment.start()
         self.segment.add_to_powerline()
-        expected = u' 3{} '.format(RepoStats.symbols["stash"])
+        expected = u' 3{} '.format(utils.RepoStats.symbols["stash"])
         self.assertEqual(self.powerline.append.call_args[0][0], expected)

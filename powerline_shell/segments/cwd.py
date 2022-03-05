@@ -1,6 +1,7 @@
 import os
 import sys
-from ..utils import warn, py3, BasicSegment
+
+from powerline_shell import utils
 
 ELLIPSIS = u'\u2026'
 
@@ -55,7 +56,7 @@ def get_fg_bg(powerline, name, is_last_dir):
 
 def add_cwd_segment(powerline):
     cwd = powerline.cwd
-    if not py3:
+    if not utils.py3:
         cwd = cwd.decode("utf-8")
     cwd = replace_home_dir(cwd)
 
@@ -64,7 +65,7 @@ def add_cwd_segment(powerline):
     full_cwd = powerline.segment_conf("cwd", "full_cwd", False)
     max_depth = powerline.segment_conf("cwd", "max_depth", 5)
     if max_depth <= 0:
-        warn("Ignoring cwd.max_depth option since it's not greater than 0")
+        utils.warn("Ignoring cwd.max_depth option since it's not greater than 0")
     elif len(names) > max_depth:
         # https://github.com/milkbikis/powerline-shell/issues/148
         # n_before is the number is the number of directories to put before the
@@ -100,6 +101,6 @@ def add_cwd_segment(powerline):
             name = maybe_shorten_name(powerline, name)
         powerline.append(name, fg, bg, separator, separator_fg)
 
-class Segment(BasicSegment):
+class Segment(utils.BasicSegment):
     def add_to_powerline(self):
         add_cwd_segment(self.powerline)
