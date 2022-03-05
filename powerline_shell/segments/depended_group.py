@@ -25,7 +25,6 @@ class Segment(ThreadedSegment):
             warn("Depended group missing `depend` or `segments`")
             return
         self.parse_segments()
-        self.run_depended_on_segments()
 
     def parse_segments(self):
         custom_importer = CustomImporter()
@@ -52,9 +51,11 @@ class Segment(ThreadedSegment):
         for i in self.segment_def["depend"]:
             if len(self.appended[i]) == 0:
                 self.should_print = False
+                return
 
     def add_to_powerline(self):
         self.join()
+        self.run_depended_on_segments()
         if not self.should_print:
             return
         for i in range(len(self.segments)):
