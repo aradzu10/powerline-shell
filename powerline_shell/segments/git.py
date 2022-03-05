@@ -5,7 +5,8 @@ from powerline_shell import utils
 
 
 def parse_git_branch_info(status):
-    info = re.search('^## (?P<local>\S+?)''(\.{3}(?P<remote>\S+?)( \[(ahead (?P<ahead>\d+)(, )?)?(behind (?P<behind>\d+))?\])?)?$', status[0])
+    info = re.search(
+        '^## (?P<local>\S+?)''(\.{3}(?P<remote>\S+?)( \[(ahead (?P<ahead>\d+)(, )?)?(behind (?P<behind>\d+))?\])?)?$', status[0])
     return info.groupdict() if info else None
 
 
@@ -15,7 +16,8 @@ def _get_git_detached_branch():
                          env=utils.get_git_subprocess_env())
     detached_ref = p.communicate()[0].decode("utf-8").rstrip('\n')
     if p.returncode == 0:
-        branch = u'{} {}'.format(utils.RepoStats.symbols['detached'], detached_ref)
+        branch = u'{} {}'.format(
+            utils.RepoStats.symbols['detached'], detached_ref)
     else:
         branch = 'Big Bang'
     return branch

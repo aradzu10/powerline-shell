@@ -16,4 +16,5 @@ class Segment(utils.BasicSegment):
             time_ = '%*'
         else:
             time_ = time.strftime('%H:%M:%S')
-        powerline.append(time_, powerline.theme.TIME_FG, powerline.theme.TIME_BG)
+        powerline.append(time_, powerline.theme.TIME_FG,
+                         powerline.theme.TIME_BG)

@@ -7,7 +7,7 @@ from powerline_shell import utils
 def _get_fossil_branch():
     branches = os.popen("fossil branch 2>/dev/null").read().strip().split("\n")
     return ''.join([
-        i.replace('*','').strip()
+        i.replace('*', '').strip()
         for i in branches
         if i.startswith('*')
     ])

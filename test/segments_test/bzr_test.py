@@ -10,13 +10,13 @@ from powerline_shell import utils
 
 
 test_cases = (
-    (["unknown:","  new-file"], utils.RepoStats(new=1)),
-    (["added:","  added-file"], utils.RepoStats(staged=1)),
-    (["modified:","  modified-file"], utils.RepoStats(changed=1)),
-    (["removed:","  removed-file"], utils.RepoStats(changed=1)),
-    (["missing:","  missing-file"], utils.RepoStats(changed=1)),
-    (["renamed:","  renamed-file"], utils.RepoStats(changed=1)),
-    (["kind changed:","  kind-changed-file"], utils.RepoStats(changed=1))
+    (["unknown:", "  new-file"], utils.RepoStats(new=1)),
+    (["added:", "  added-file"], utils.RepoStats(staged=1)),
+    (["modified:", "  modified-file"], utils.RepoStats(changed=1)),
+    (["removed:", "  removed-file"], utils.RepoStats(changed=1)),
+    (["missing:", "  missing-file"], utils.RepoStats(changed=1)),
+    (["renamed:", "  renamed-file"], utils.RepoStats(changed=1)),
+    (["kind changed:", "  kind-changed-file"], utils.RepoStats(changed=1))
 )
 
 
@@ -52,7 +52,7 @@ class BzrTest(unittest.TestCase):
 
     @mock.patch("powerline_shell.utils.get_PATH")
     def test_bzr_not_installed(self, get_PATH):
-        get_PATH.return_value = "" # so bzr can't be found
+        get_PATH.return_value = ""  # so bzr can't be found
         self.segment.start()
         self.segment.add_to_powerline()
         self.assertEqual(self.powerline.append.call_count, 0)

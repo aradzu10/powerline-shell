@@ -10,7 +10,7 @@ class Segment(utils.BasicSegment):
             p1 = subprocess.Popen(["rbenv", "local"], stdout=subprocess.PIPE)
             version = p1.communicate()[0].decode("utf-8").rstrip()
             if len(version) <= 0:
-                    return
+                return
             powerline.append(
                 version,
                 powerline.theme.VIRTUAL_ENV_FG,

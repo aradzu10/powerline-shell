@@ -6,7 +6,8 @@ from powerline_shell import utils
 class Segment(utils.ThreadedSegment):
     def run(self):
         try:
-            p1 = subprocess.Popen(["node", "--version"], stdout=subprocess.PIPE)
+            p1 = subprocess.Popen(["node", "--version"],
+                                  stdout=subprocess.PIPE)
             self.version = p1.communicate()[0].decode("utf-8").rstrip()
         except OSError:
             self.version = None

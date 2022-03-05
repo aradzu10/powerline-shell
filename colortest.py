@@ -3,14 +3,18 @@ import sys
 
 ESCAPE = chr(27)
 
+
 def fg(color):
     return ESCAPE + '[38;5;{0}m'.format(color)
+
 
 def bg(color):
     return ESCAPE + '[48;5;{0}m'.format(color)
 
+
 def reset():
     return ESCAPE + '[48;0m'
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 6:

@@ -11,9 +11,10 @@ class Segment(utils.ThreadedSegment):
         self.num_jobs = 0
         if platform.system().startswith('CYGWIN'):
             # cygwin ps is a special snowflake...
-            output_proc = subprocess.Popen(['ps', '-af'], stdout=subprocess.PIPE)
+            output_proc = subprocess.Popen(
+                ['ps', '-af'], stdout=subprocess.PIPE)
             output = map(lambda l: int(l.split()[2].strip()),
-                output_proc.communicate()[0].decode("utf-8").splitlines()[1:])
+                         output_proc.communicate()[0].decode("utf-8").splitlines()[1:])
             self.num_jobs = output.count(os.getppid()) - 1
         else:
             pppid_proc = subprocess.Popen(['ps', '-p', str(os.getppid()), '-oppid='],

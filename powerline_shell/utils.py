@@ -8,6 +8,7 @@ py3 = sys.version_info[0] == 3
 if py3:
     def unicode_(x):
         return str(x)
+
     def decode(x):
         return x.decode("utf-8")
 else:
@@ -91,7 +92,7 @@ class RepoStats(object):
 
 
 def warn(msg):
-    print('[powerline-bash] ', msg)
+    print('PowerLine WARN ', msg)
 
 
 class BasicSegment(object):
@@ -132,4 +133,3 @@ def get_git_subprocess_env():
     # LANG is specified to ensure git always uses a language we are expecting.
     # Otherwise we may be unable to parse the output.
     return get_subprocess_env(LANG="C")
-

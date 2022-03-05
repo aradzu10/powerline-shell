@@ -41,10 +41,12 @@ class Segment(utils.ThreadedSegment):
         with overide_append(self.powerline):
             for i in self.segment_def["depend"]:
                 segment = self.segments[i]
+
                 def append_func(
                     content, fg, bg, separator=None, separator_fg=None, sanitize=True
                 ):
-                    self.appended[i].append((content, fg, bg, separator, separator_fg, sanitize))
+                    self.appended[i].append(
+                        (content, fg, bg, separator, separator_fg, sanitize))
                 self.powerline.append = append_func
                 segment.add_to_powerline()
         for i in self.segment_def["depend"]:

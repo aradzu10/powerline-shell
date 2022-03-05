@@ -10,7 +10,8 @@ class Segment(utils.BasicSegment):
 
         try:
             p1 = subprocess.Popen(['ruby', '-v'], stdout=subprocess.PIPE)
-            p2 = subprocess.Popen(['sed', "s/ (.*//"], stdin=p1.stdout, stdout=subprocess.PIPE)
+            p2 = subprocess.Popen(
+                ['sed', "s/ (.*//"], stdin=p1.stdout, stdout=subprocess.PIPE)
             ruby_and_gemset = p2.communicate()[0].decode('utf-8').rstrip()
 
             gem_set = os.environ.get('GEM_HOME', '@').split('@')

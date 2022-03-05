@@ -28,4 +28,5 @@ class UptimeTest(unittest.TestCase):
             check_output.return_value = stdout
             self.segment.start()
             self.segment.add_to_powerline()
-            self.assertEqual(self.powerline.append.call_args[0][0].split()[0], result)
+            self.assertEqual(
+                self.powerline.append.call_args[0][0].split()[0], result)

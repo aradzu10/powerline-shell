@@ -10,6 +10,7 @@ from powerline_shell import utils
 from powerline_shell.segments import load_segment
 from powerline_shell.themes import load_theme
 
+
 def _current_dir():
     """Returns the full current working directory as the user would have used
     in their shell (ie. without following symbolic links).
@@ -38,8 +39,8 @@ def get_valid_cwd():
         cwd = _current_dir()
     except:
         utils.warn("Your current directory is invalid. If you open a ticket at " +
-            "https://github.com/milkbikis/powerline-shell/issues/new " +
-            "we would love to help fix the issue.")
+                   "https://github.com/milkbikis/powerline-shell/issues/new " +
+                   "we would love to help fix the issue.")
         sys.stdout.write("> ")
         sys.exit(1)
 
@@ -50,7 +51,7 @@ def get_valid_cwd():
         up = os.sep.join(parts)
     if cwd != up:
         utils.warn("Your current directory is invalid. Lowest valid directory: "
-             + up)
+                   + up)
     return cwd
 
 
@@ -137,7 +138,8 @@ class Powerline(object):
 
     def draw_segment(self, idx):
         segment = self.segments[idx]
-        next_segment = self.segments[idx + 1] if idx < len(self.segments)-1 else None
+        next_segment = self.segments[idx +
+                                     1] if idx < len(self.segments)-1 else None
 
         return ''.join((
             self.fgcolor(segment[1]),
@@ -147,11 +149,14 @@ class Powerline(object):
             self.fgcolor(segment[4]),
             segment[3]))
 
+
 POTENTIAL_LOCATIONS = [
     "powerline-shell.json",
     "~/.powerline-shell.json",
-    os.path.join(os.environ.get("XDG_CONFIG_HOME", "~/.config"), "powerline-shell", "config.json"),
+    os.path.join(os.environ.get("XDG_CONFIG_HOME", "~/.config"),
+                 "powerline-shell", "config.json"),
 ]
+
 
 def get_config():
     for location in POTENTIAL_LOCATIONS:
@@ -161,8 +166,10 @@ def get_config():
                 try:
                     return json.loads(f.read())
                 except Exception as e:
-                    utils.warn("Config file ({0}) could not be decoded! Error: {1}".format(full, e))
+                    utils.warn(
+                        "Config file ({0}) could not be decoded! Error: {1}".format(full, e))
     return DEFAULT_CONFIG
+
 
 DEFAULT_CONFIG = {
     "segments": [
