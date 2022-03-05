@@ -6,3 +6,6 @@ try:
         powerline_shell.powerline_shell()
 except KeyboardInterrupt:
     pass
+except Exception as e:
+    from powerline_shell import utils
+    utils.warn(e)
