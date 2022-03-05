@@ -16,12 +16,18 @@ def overide_append(powerline):
 class Segment(ThreadedSegment):
     def __init__(self, powerline, segment_def):
         super().__init__(powerline, segment_def)
+        self.appended = collections.defaultdict(list)
         self.segments = []
+        self.should_print = True
 
-    def start(self):
+    def run(self):
         if "depend" not in self.segment_def or "segments" not in self.segment_def:
             warn("Depended group missing `depend` or `segments`")
             return
+        self.parse_segments()
+        self.run_depended_on_segments()
+
+    def parse_segments(self):
         custom_importer = CustomImporter()
         for seg_conf in self.segment_def["segments"]:
             if not isinstance(seg_conf, dict):
@@ -33,21 +39,27 @@ class Segment(ThreadedSegment):
             segment.start()
             self.segments.append(segment)
 
-    def add_to_powerline(self):
-        appended = collections.defaultdict(list)
+    def run_depended_on_segments(self):
         with overide_append(self.powerline):
-            for i, segment in enumerate(self.segments):
+            for i in self.segment_def["depend"]:
+                segment = self.segments[i]
                 def append_func(
                     content, fg, bg, separator=None, separator_fg=None, sanitize=True
                 ):
-                    appended[i].append((content, fg, bg, separator, separator_fg, sanitize))
+                    self.appended[i].append((content, fg, bg, separator, separator_fg, sanitize))
                 self.powerline.append = append_func
                 segment.add_to_powerline()
-        if len(appended) == 0:
+        for i in self.segment_def["depend"]:
+            if len(self.appended[i]) == 0:
+                self.should_print = False
+
+    def add_to_powerline(self):
+        self.join()
+        if not self.should_print:
             return
-        for depend_index in self.segment_def["depend"]:
-            if len(appended[depend_index]) == 0:
-                return
-        for i in range(len(self.segment_def["segments"])):
-            for line in appended[i]:
-                self.powerline.append(*line)
+        for i in range(len(self.segments)):
+            if i in self.appended:
+                for line in self.appended[i]:
+                    self.powerline.append(*line)
+            else:
+                self.segments[i].add_to_powerline()
