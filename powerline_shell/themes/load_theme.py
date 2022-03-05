@@ -5,6 +5,11 @@ We load themes that way in order to improve performance.
 from powerline_shell import utils
 
 
+def aradz():
+    from powerline_shell.themes import aradz
+    return aradz.Color
+
+
 def basic():
     from powerline_shell.themes import basic
     return basic.Color
@@ -36,6 +41,7 @@ def washed():
 
 
 THEMES_NAMES = {
+    "aradz": aradz,
     "basic": basic,
     "default": default,
     "gruvbox": gruvbox,
